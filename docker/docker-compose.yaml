@@ -1,0 +1,28 @@
+version: '3.2'
+services:
+  arango:
+    restart: always
+    image: arangodb:3.6.0
+    container_name: arango
+    ports:
+      - 8529:8529
+    environment:
+      ARANGO_STORAGE_ENGINE: rocksdb
+      ARANGO_ROOT_PASSWORD: admin
+    volumes:
+      - /var/lib/arangodb:/var/lib/arangodb3
+
+  arango_init:
+    image: arangodb:3.6.0
+    container_name: arango_init
+    depends_on:
+      - arango
+    environment:
+      ARANGO_ROOT_PASSWORD: admin
+      TOF_USER: tof_user
+      TOF_PWD: tof_pwd
+      TOF_DB: tof_database
+    volumes:
+      - ./arango/db-init.js:/arango-init/db-init.js
+      - ./arango/init.sh:/arango-init/init.sh
+    command: sh -c 'sleep 10 && /arango-init/init.sh'
