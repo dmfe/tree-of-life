@@ -3,6 +3,7 @@ services:
   arango:
     restart: always
     image: arangodb:3.6.0
+    hostname: arango
     container_name: arango
     ports:
       - 8529:8529
@@ -26,3 +27,14 @@ services:
       - ./arango/db-init.js:/arango-init/db-init.js
       - ./arango/init.sh:/arango-init/init.sh
     command: sh -c 'sleep 10 && /arango-init/init.sh'
+
+  tof-data-processor:
+    image: com.dmfe.tof/tof-data-processor:dev
+    build: ../tof-data-processor
+    hostname: tof-data-processor
+    container_name: tof-data-processor
+    depends_on:
+      - arango
+      - arango_init
+    ports:
+      - 8080:8080
