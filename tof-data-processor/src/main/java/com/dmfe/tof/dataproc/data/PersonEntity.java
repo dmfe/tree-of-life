@@ -2,7 +2,7 @@ package com.dmfe.tof.dataproc.data;
 
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.Field;
-import com.dmfe.tof.dataproc.Generators;
+import com.dmfe.tof.dataproc.utils.Generators;
 import com.dmfe.tof.model.tree.Person;
 import lombok.Builder;
 import lombok.Data;

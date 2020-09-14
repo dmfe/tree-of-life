@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%style{%d{ISO8601}}{green}
+ %highlight{%-5level }{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue, TRACE=bg_blue}
+[%style{%t}{bright,blue}]%style{%C{1.}}{bright,yellow}: %msg%n%throwable" disableAnsi="false" />
+        </Console>
+
+        <RollingFile name="RollingFile"
+                     fileName="./logs/tof-data-processor.log"
+                     filePattern="./logs/$${date:yyyy-MM}/tof-data-processor%d{-dd-MMMM-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- Rollover on strartup, daily and when file reaches 10 megabytes -->
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Log everything at INFO level -->
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </Root>
+
+        <!-- Log "com.dmfe.tof.dataproc" at specified level -->
+        <Logger name="com.dmfe.tof.dataproc" level="${env:APP_LOG_LEVEL:-info}" />
+    </Loggers>
+</Configuration>

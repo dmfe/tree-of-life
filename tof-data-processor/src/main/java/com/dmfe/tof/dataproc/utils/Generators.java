@@ -1,4 +1,4 @@
-package com.dmfe.tof.dataproc;
+package com.dmfe.tof.dataproc.utils;
 
 import org.apache.commons.lang3.StringUtils;
 

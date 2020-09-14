@@ -4,6 +4,7 @@ import com.dmfe.tof.dataproc.services.api.TreeCRUDService;
 import com.dmfe.tof.model.tree.Person;
 import com.dmfe.tof.model.tree.Persons;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/tof/dp/tree")
 @AllArgsConstructor
+@Log4j2
 public class TOFDataProcessorController {
 
     private TreeCRUDService treeCRUDService;
@@ -31,6 +33,8 @@ public class TOFDataProcessorController {
     @GetMapping("/persons")
     @ResponseStatus(HttpStatus.OK)
     public Persons getPersons() {
+        log.trace("GET request /api/tof/dp/tree/persons");
+
         return Persons.newBuilder()
                 .addAllPersonList(treeCRUDService.getPersons()).build();
     }
@@ -38,11 +42,15 @@ public class TOFDataProcessorController {
     @GetMapping("/persons/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Person getPersonById(@PathVariable("id") String id) {
+        log.trace("GET request /api/tof/dp/tree/persons/{}", id);
+
         return treeCRUDService.getPersonById(id);
     }
 
     @PostMapping("/persons")
     public ResponseEntity<ResponseData> addPerson(@RequestBody Person person) {
+        log.trace("POST request /api/tof/dp/tree/persons\n{}", person);
+
         String id = treeCRUDService.savePerson(person);
 
         return ResponseEntity
@@ -53,6 +61,8 @@ public class TOFDataProcessorController {
     @PutMapping("persons/{id}")
     public ResponseEntity<ResponseData> modifyPerson(@PathVariable("id") String id,
                                                      @RequestBody Person person) {
+        log.trace("PUT request /api/tof/dp/tree/persons/{}\n{}", id, person);
+
         treeCRUDService.modifyPerson(id, person);
 
         return ResponseEntity
@@ -62,6 +72,8 @@ public class TOFDataProcessorController {
 
     @DeleteMapping("persons/{id}")
     public ResponseEntity<ResponseData> deletePerson(@PathVariable("id") String id) {
+        log.trace("DELETE request /api/tof/dp/tree/persons/{}", id);
+
         treeCRUDService.deletePerson(id);
 
         return ResponseEntity
