@@ -1,0 +1,18 @@
+syntax = "proto3";
+option java_package = "com.dmfe.tof.model.tree";
+option java_multiple_files = true;
+
+import "com/dmfe/tof/model/tree/geography.proto";
+
+message Persons {
+    repeated Person personList = 1;
+}
+
+message Person {
+    string id = 1;
+    string name = 2;
+    string surname = 3;
+    repeated string oldSurnames = 4;
+    Location bornLocation = 5;
+    Location livingLocation = 6;
+}

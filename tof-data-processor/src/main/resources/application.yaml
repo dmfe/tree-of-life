@@ -1,0 +1,6 @@
+arango:
+  hostname: ${ARANGO_HOSTNAME:localhost}
+  port: ${ARANGO_PORT:8529}
+  db_name: ${ARANGO_DB_NAME:tof_database}
+  login: ${ARANGO_LOGIN:tof_user}
+  password: ${ARANGO_PASSWORD:tof_pwd}
