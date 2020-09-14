@@ -1,0 +1,19 @@
+{
+  "name" : "Dmitry",
+  "surname" : "Fedotov",
+  "oldSurnames" : ["Arstov", "Oburtsov"],
+  "bornLocation" : {
+    "country" : "RUSSIA",
+    "city" : "Gorky",
+    "district" : "Nizhegorodsky",
+    "street" : "Brinskogo",
+    "building" : "1"
+  },
+  "livingLocation" : {
+    "country" : "RUSSIA",
+    "city" : "Ankudinovka",
+    "district" : "Kstovskii",
+    "street" : "Russkay",
+    "building" : "4"
+  }
+}

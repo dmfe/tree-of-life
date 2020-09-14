@@ -1,0 +1,30 @@
+syntax = "proto3";
+option java_package = "com.dmfe.tof.model.tree";
+option java_multiple_files = true;
+
+message Location {
+    string id = 1;
+    Country country = 2;
+    string city = 3;
+    string district = 4;
+    string street = 5;
+    string building = 6;
+}
+
+enum Country {
+    UNKNOWN_COUNTRY = 0;
+    RUSSIA = 1;
+    BELARUS = 2;
+    UKRAINE = 3;
+    TURKMENISTAN = 4;
+    TAJIKISTAN = 5;
+    KAZAKHSTAN = 6;
+    KYRGYZSTAN = 7;
+    UZBEKISTAN = 8;
+    ARMENIA = 9;
+    ESTONIA = 10;
+    MOLDOVA = 11;
+    ROMANIA = 12;
+    SLOVAKIA = 13;
+    SLOVENIA = 14;
+}
