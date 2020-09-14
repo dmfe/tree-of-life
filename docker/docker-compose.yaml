@@ -36,5 +36,14 @@ services:
     depends_on:
       - arango
       - arango_init
+    environment:
+      ARANGO_HOSTNAME: arango
+      ARANGO_PORT: 8529
+      ARANGO_DB_NAME: tof_database
+      ARANGO_LOGIN: tof_user
+      ARANGO_PASSWORD: tof_pwd
+      APP_LOG_LEVEL: TRACE
     ports:
       - 8080:8080
+    volumes:
+      - /var/log/tof:/app/logs

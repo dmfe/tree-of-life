@@ -1,6 +1,6 @@
 package com.dmfe.tof.dataproc.data;
 
-import com.dmfe.tof.dataproc.Generators;
+import com.dmfe.tof.dataproc.utils.Generators;
 import com.dmfe.tof.model.tree.Country;
 import com.dmfe.tof.model.tree.Location;
 import lombok.Builder;
