@@ -4,6 +4,7 @@ import com.dmfe.tof.dataproc.data.PersonEntity;
 import com.dmfe.tof.dataproc.repositories.PersonRepository;
 import com.dmfe.tof.dataproc.services.api.TreeCRUDService;
 import com.dmfe.tof.model.tree.Person;
+import com.dmfe.tof.model.tree.Persons;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,13 @@ public class TreeCRUDServiceImpl implements TreeCRUDService {
     private final PersonRepository personRepository;
 
     @Override
-    public List<Person> getPersons() {
+    public Persons getPersons() {
         List<Person> persons = StreamSupport.stream(personRepository.findAll().spliterator(), false)
                 .map(PersonEntity::toPerson)
                 .collect(Collectors.toList());
         log.trace("(getPersons): Found {} person(s)", persons.size());
 
-        return persons;
+        return Persons.newBuilder().addAllPersonList(persons).build();
     }
 
     @Override

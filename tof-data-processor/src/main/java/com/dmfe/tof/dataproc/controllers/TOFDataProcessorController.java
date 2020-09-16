@@ -3,6 +3,12 @@ package com.dmfe.tof.dataproc.controllers;
 import com.dmfe.tof.dataproc.services.api.TreeCRUDService;
 import com.dmfe.tof.model.tree.Person;
 import com.dmfe.tof.model.tree.Persons;
+import com.google.protobuf.util.JsonFormat;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -30,46 +36,78 @@ public class TOFDataProcessorController {
         return "Greetings from TOF InputData Processor!";
     }
 
-    @GetMapping("/persons")
+    @Operation(summary = "Get persons list by some filtering criteria")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Found some persons")
+    })
+    @GetMapping(value = "/persons", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Persons getPersons() {
+    public String getPersons() {
         log.trace("GET request /api/tof/dp/tree/persons");
 
-        return Persons.newBuilder()
-                .addAllPersonList(treeCRUDService.getPersons()).build();
+        return InvalidProtobufMsgHandler.handle(() -> JsonFormat.printer().print(treeCRUDService.getPersons()));
     }
 
-    @GetMapping("/persons/{id}")
+    @Operation(summary = "Get person by id")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Found person")
+    })
+    @GetMapping(value = "/persons/{id}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Person getPersonById(@PathVariable("id") String id) {
+    public String getPersonById(@PathVariable("id") String id) {
         log.trace("GET request /api/tof/dp/tree/persons/{}", id);
 
-        return treeCRUDService.getPersonById(id);
+        return InvalidProtobufMsgHandler.handle(() ->
+                JsonFormat.printer().print(treeCRUDService.getPersonById(id)));
     }
 
-    @PostMapping("/persons")
-    public ResponseEntity<ResponseData> addPerson(@RequestBody Person person) {
+    @Operation(summary = "Create new person")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Person created")
+    })
+    @PostMapping(value = "/persons", consumes = "application/json")
+    public ResponseEntity<ResponseData> addPerson(@RequestBody String person) {
         log.trace("POST request /api/tof/dp/tree/persons\n{}", person);
 
-        String id = treeCRUDService.savePerson(person);
+        Person.Builder personBuilder = Person.newBuilder();
+        InvalidProtobufMsgHandler.handle(() -> {
+            JsonFormat.parser().merge(person, personBuilder);
+            return null;
+        });
+
+        String id = treeCRUDService.savePerson(personBuilder.build());
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseData("Created Person with id = " + id));
     }
 
+    @Operation(summary = "Change existing person")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Person modified")
+    })
     @PutMapping("persons/{id}")
     public ResponseEntity<ResponseData> modifyPerson(@PathVariable("id") String id,
-                                                     @RequestBody Person person) {
+                                                     @RequestBody String person) {
         log.trace("PUT request /api/tof/dp/tree/persons/{}\n{}", id, person);
 
-        treeCRUDService.modifyPerson(id, person);
+        Person.Builder personBuilder = Person.newBuilder();
+        InvalidProtobufMsgHandler.handle(() -> {
+            JsonFormat.parser().merge(person, personBuilder);
+            return null;
+        });
+
+        treeCRUDService.modifyPerson(id, personBuilder.build());
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseData("Modified Person with id = " + id));
     }
 
+    @Operation(summary = "Delete existing person by id")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Person deleted")
+    })
     @DeleteMapping("persons/{id}")
     public ResponseEntity<ResponseData> deletePerson(@PathVariable("id") String id) {
         log.trace("DELETE request /api/tof/dp/tree/persons/{}", id);

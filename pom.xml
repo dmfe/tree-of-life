@@ -36,6 +36,7 @@
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <arango.spring-data.version>3.3.0</arango.spring-data.version>
         <arango.java-driver.version>6.7.3</arango.java-driver.version>
+        <springdoc-open-api.version>1.4.4</springdoc-open-api.version>
         <protobuf.version>3.11.4</protobuf.version>
         <protobuf-java-format.version>1.4</protobuf-java-format.version>
         <apache.commons-lang3.verson>3.9</apache.commons-lang3.verson>
@@ -62,6 +63,12 @@
                 <groupId>com.arangodb</groupId>
                 <artifactId>arangodb-java-driver</artifactId>
                 <version>${arango.java-driver.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc-open-api.version}</version>
             </dependency>
 
             <dependency>
