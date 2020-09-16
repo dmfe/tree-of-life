@@ -1,11 +1,10 @@
 package com.dmfe.tof.dataproc.services.api;
 
 import com.dmfe.tof.model.tree.Person;
-
-import java.util.List;
+import com.dmfe.tof.model.tree.Persons;
 
 public interface TreeCRUDService {
-    List<Person> getPersons();
+    Persons getPersons();
     Person getPersonById(String id);
     String savePerson(Person person);
     void modifyPerson(String id, Person person);
