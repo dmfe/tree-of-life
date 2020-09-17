@@ -2,11 +2,8 @@ package com.dmfe.tof.dataproc.controllers;
 
 import com.dmfe.tof.dataproc.services.api.TreeCRUDService;
 import com.dmfe.tof.model.tree.Person;
-import com.dmfe.tof.model.tree.Persons;
 import com.google.protobuf.util.JsonFormat;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;

@@ -40,6 +40,7 @@
         <protobuf.version>3.11.4</protobuf.version>
         <protobuf-java-format.version>1.4</protobuf-java-format.version>
         <apache.commons-lang3.verson>3.9</apache.commons-lang3.verson>
+        <guava.version>29.0-jre</guava.version>
         <lombok.version>1.18.12</lombok.version>
     </properties>
 
@@ -80,15 +81,15 @@
             </dependency>
 
             <dependency>
-                <groupId>com.googlecode.protobuf-java-format</groupId>
-                <artifactId>protobuf-java-format</artifactId>
-                <version>${protobuf-java-format.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${apache.commons-lang3.verson}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
 
             <dependency>
