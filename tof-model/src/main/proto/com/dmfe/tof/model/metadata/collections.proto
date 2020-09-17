@@ -1,0 +1,9 @@
+syntax = "proto3";
+option java_package = "com.dmfe.tof.model.metadata";
+option java_multiple_files = true;
+
+enum DbCollections {
+    UNKNOWN = 0;
+    PERSON = 1;
+    LOCATION = 2;
+}
