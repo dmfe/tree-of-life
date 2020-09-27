@@ -1,13 +1,13 @@
-package com.dmfe.tof.dataproc.components;
+package com.dmfe.tof.dataproc.components.db;
 
 import com.dmfe.tof.dataproc.services.api.DbInitService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DbInitComponent implements ApplicationListener<ApplicationReadyEvent> {
     private final DbInitService dbInitService;
 

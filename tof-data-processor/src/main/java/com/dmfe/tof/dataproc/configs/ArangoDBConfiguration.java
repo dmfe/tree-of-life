@@ -1,13 +1,11 @@
 package com.dmfe.tof.dataproc.configs;
 
 import com.arangodb.ArangoDB;
-import com.arangodb.springframework.annotation.EnableArangoRepositories;
 import com.arangodb.springframework.config.ArangoConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableArangoRepositories(basePackages = {"com.dmfe.tof.dataproc.repositories"})
 public class ArangoDBConfiguration implements ArangoConfiguration {
 
     @Value("${arango.hostname}")
