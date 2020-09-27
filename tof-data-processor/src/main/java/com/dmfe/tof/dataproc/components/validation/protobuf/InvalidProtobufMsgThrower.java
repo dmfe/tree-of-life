@@ -1,4 +1,4 @@
-package com.dmfe.tof.dataproc.controllers;
+package com.dmfe.tof.dataproc.components.validation.protobuf;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 

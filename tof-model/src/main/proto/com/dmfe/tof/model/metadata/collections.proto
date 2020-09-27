@@ -4,6 +4,6 @@ option java_multiple_files = true;
 
 enum DbCollections {
     UNKNOWN = 0;
-    PERSON = 1;
-    LOCATION = 2;
+    PERSONS = 1;
+    LOCATIONS = 2;
 }

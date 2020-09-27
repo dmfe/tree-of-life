@@ -1,12 +1,13 @@
 package com.dmfe.tof.dataproc.controllers;
 
-import com.dmfe.tof.dataproc.services.api.TreeCRUDService;
-import com.dmfe.tof.model.tree.Person;
-import com.google.protobuf.util.JsonFormat;
+import com.dmfe.tof.dataproc.components.request.data.RequestData;
+import com.dmfe.tof.dataproc.components.request.data.ResponseData;
+import com.dmfe.tof.dataproc.components.request.handlers.RequestHandler;
+import com.dmfe.tof.dataproc.components.request.handlers.RequestHandlerProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,57 +23,65 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/tof/dp/tree")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Log4j2
 public class TOFDataProcessorController {
 
-    private TreeCRUDService treeCRUDService;
+    private static final String PERSONS = "persons";
+    private static final String LOCATIONS = "locations";
 
-    @RequestMapping("/")
-    public String index() {
-        return "Greetings from TOF InputData Processor!";
-    }
+    private final RequestHandlerProvider requestHandlerProvider;
 
     @Operation(summary = "Get persons list by some filtering criteria")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Found some persons")
     })
-    @GetMapping(value = "/persons", produces = "application/json")
+    @GetMapping(value = "/" + PERSONS, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public String getPersons() {
         log.trace("GET request /api/tof/dp/tree/persons");
 
-        return InvalidProtobufMsgHandler.handle(() -> JsonFormat.printer().print(treeCRUDService.getPersons()));
+        RequestHandler<String> handler = requestHandlerProvider.getGetRequestHandler();
+        RequestData requestData = RequestData.builder()
+                .entity(PERSONS)
+                .build();
+
+        return handler.handle(requestData);
     }
 
     @Operation(summary = "Get person by id")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Found person")
     })
-    @GetMapping(value = "/persons/{id}", produces = "application/json")
+    @GetMapping(value = "/" + PERSONS + "/{id}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public String getPersonById(@PathVariable("id") String id) {
         log.trace("GET request /api/tof/dp/tree/persons/{}", id);
 
-        return InvalidProtobufMsgHandler.handle(() ->
-                JsonFormat.printer().print(treeCRUDService.getPersonById(id)));
+        RequestHandler<String> requestHandler = requestHandlerProvider.getGetRequestHandler();
+        RequestData requestData = RequestData.builder()
+                .entity(PERSONS)
+                .id(id)
+                .build();
+
+        return requestHandler.handle(requestData);
     }
 
     @Operation(summary = "Create new person")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Person created")
     })
-    @PostMapping(value = "/persons", consumes = "application/json")
+    @PostMapping(value = "/" + PERSONS, consumes = "application/json")
     public ResponseEntity<ResponseData> addPerson(@RequestBody String person) {
         log.trace("POST request /api/tof/dp/tree/persons\n{}", person);
 
-        Person.Builder personBuilder = Person.newBuilder();
-        InvalidProtobufMsgHandler.handle(() -> {
-            JsonFormat.parser().merge(person, personBuilder);
-            return null;
-        });
+        RequestHandler<String> requestHandler = requestHandlerProvider.getPostRequestHandler();
+        RequestData requestData = RequestData.builder()
+                .entity(PERSONS)
+                .data(person)
+                .build();
 
-        String id = treeCRUDService.savePerson(personBuilder.build());
+        String id = requestHandler.handle(requestData);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -83,18 +92,19 @@ public class TOFDataProcessorController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Person modified")
     })
-    @PutMapping("persons/{id}")
+    @PutMapping("/" + PERSONS + "/{id}")
     public ResponseEntity<ResponseData> modifyPerson(@PathVariable("id") String id,
                                                      @RequestBody String person) {
         log.trace("PUT request /api/tof/dp/tree/persons/{}\n{}", id, person);
 
-        Person.Builder personBuilder = Person.newBuilder();
-        InvalidProtobufMsgHandler.handle(() -> {
-            JsonFormat.parser().merge(person, personBuilder);
-            return null;
-        });
+        RequestHandler<Void> requestHandler = requestHandlerProvider.getPutRequestHandler();
+        RequestData requestData = RequestData.builder()
+                .id(id)
+                .entity(PERSONS)
+                .data(person)
+                .build();
 
-        treeCRUDService.modifyPerson(id, personBuilder.build());
+        requestHandler.handle(requestData);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -105,11 +115,17 @@ public class TOFDataProcessorController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Person deleted")
     })
-    @DeleteMapping("persons/{id}")
+    @DeleteMapping("/" + PERSONS + "/{id}")
     public ResponseEntity<ResponseData> deletePerson(@PathVariable("id") String id) {
         log.trace("DELETE request /api/tof/dp/tree/persons/{}", id);
 
-        treeCRUDService.deletePerson(id);
+        RequestHandler<Void> requestHandler = requestHandlerProvider.getDeleteRequestHandler();
+        RequestData requestData = RequestData.builder()
+                .id(id)
+                .entity(PERSONS)
+                .build();
+
+        requestHandler.handle(requestData);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

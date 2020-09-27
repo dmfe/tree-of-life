@@ -1,15 +1,15 @@
-package com.dmfe.tof.dataproc.controllers;
+package com.dmfe.tof.dataproc.components.validation.protobuf;
 
 import com.dmfe.tof.dataproc.exceptions.ProtobufFormatException;
 import com.google.protobuf.InvalidProtocolBufferException;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public final class InvalidProtobufMsgHandler {
+final class InvalidProtobufMsgHandler {
 
     private InvalidProtobufMsgHandler() {}
 
-    public static <R> R handle(InvalidProtobufMsgThrower<R> thrower) {
+    static <R> R handle(InvalidProtobufMsgThrower<R> thrower) {
         try {
             return thrower.doWork();
         } catch (InvalidProtocolBufferException ex) {
