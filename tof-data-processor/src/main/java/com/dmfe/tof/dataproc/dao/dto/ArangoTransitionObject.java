@@ -4,12 +4,14 @@ import static com.dmfe.tof.dataproc.utils.ArangoHelper.EXTERNAL_ID;
 
 import com.google.gson.Gson;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.Map;
 
 @Builder
 @ToString
+@EqualsAndHashCode
 public final class ArangoTransitionObject implements TransitionObject {
 
     private static final Gson GSON = new Gson();

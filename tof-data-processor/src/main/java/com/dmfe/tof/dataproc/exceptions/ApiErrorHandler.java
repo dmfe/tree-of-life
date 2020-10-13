@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Log4j2
 public class ApiErrorHandler {
 
-    @ExceptionHandler(EntityNotFound.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorData handleNotFoundErrors(Throwable ex) {
         log.warn(ex.getLocalizedMessage());
@@ -21,7 +21,8 @@ public class ApiErrorHandler {
 
     @ExceptionHandler({
             ModelException.class,
-            ProtobufFormatException.class
+            ProtobufFormatException.class,
+            JsonFormatException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorData handleBadRequestErrors(Throwable ex) {

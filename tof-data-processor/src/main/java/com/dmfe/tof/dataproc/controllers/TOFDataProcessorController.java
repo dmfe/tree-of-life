@@ -92,7 +92,7 @@ public class TOFDataProcessorController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Person modified")
     })
-    @PutMapping("/" + PERSONS + "/{id}")
+    @PutMapping(value = "/" + PERSONS + "/{id}", consumes = "application/json")
     public ResponseEntity<ResponseData> modifyPerson(@PathVariable("id") String id,
                                                      @RequestBody String person) {
         log.trace("PUT request /api/tof/dp/tree/persons/{}\n{}", id, person);

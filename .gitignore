@@ -3,3 +3,9 @@
 **/*.iml
 **/*.swp
 **/logs/
+
+**/.project
+**/.classpath
+**/.factorypath
+**/.project
+**/.settings/

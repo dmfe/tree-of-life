@@ -44,8 +44,12 @@ public final class DbCollectionsUtil {
     }
 
     public static Optional<Message> getProtoMessage(String entityName) {
-        int dbCollectionNumber = DbCollections.valueOf(entityName.toUpperCase()).getNumber();
-        return Optional.ofNullable(DB_ENTITIES_MAP.get(dbCollectionNumber))
-                .map(entityInfo -> entityInfo.protoBuilder.getDefaultInstanceForType());
+        try {
+            int dbCollectionNumber = DbCollections.valueOf(entityName.toUpperCase()).getNumber();
+            return Optional.ofNullable(DB_ENTITIES_MAP.get(dbCollectionNumber))
+                    .map(entityInfo -> entityInfo.protoBuilder.getDefaultInstanceForType());
+        } catch (IllegalArgumentException ex) {
+            return Optional.empty();
+        }
     }
 }

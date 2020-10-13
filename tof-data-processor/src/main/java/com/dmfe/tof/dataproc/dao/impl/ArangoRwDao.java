@@ -9,7 +9,7 @@ import com.dmfe.tof.dataproc.dao.datasources.Datasource;
 import com.dmfe.tof.dataproc.dao.dto.TransitionObject;
 import com.dmfe.tof.dataproc.dao.queries.Query;
 import com.dmfe.tof.dataproc.dao.queries.QueryFactory;
-import com.dmfe.tof.dataproc.exceptions.EntityNotFound;
+import com.dmfe.tof.dataproc.exceptions.EntityNotFoundException;
 import com.dmfe.tof.dataproc.utils.ArangoHelper;
 import com.dmfe.tof.dataproc.utils.Generators;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class ArangoRwDao implements RwDao {
     @Override
     public String createEntity(RequestProperties requestProperties) {
         TransitionObject newTransitionObject = requestProperties.getTransitionObject();
-        newTransitionObject.setExternalId(Generators.generateRandomeUuid());
+        newTransitionObject.setExternalId(Generators.generateRandomUuid());
         log.debug("Entity to create: \n{}", newTransitionObject);
 
         getDb().collection(requestProperties.getEntityName())
@@ -73,7 +73,7 @@ public class ArangoRwDao implements RwDao {
                 .findFirst()
                 .orElseThrow(() -> {
                     log.warn("Object with id: {} not found", requestProperties.getId());
-                    return new EntityNotFound("Object with id: " + requestProperties.getId() + " not found");
+                    return new EntityNotFoundException("Object with id: " + requestProperties.getId() + " not found");
                 });
     }
 

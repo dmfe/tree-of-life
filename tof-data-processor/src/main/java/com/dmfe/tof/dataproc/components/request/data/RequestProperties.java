@@ -2,12 +2,16 @@ package com.dmfe.tof.dataproc.components.request.data;
 
 import com.dmfe.tof.dataproc.dao.dto.TransitionObject;
 import com.dmfe.tof.dataproc.dao.dto.TransitionObjectFactory;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 @Getter
 @RequiredArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class RequestProperties {
     private final String id;
     private final String entityName;
