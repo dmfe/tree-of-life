@@ -18,10 +18,9 @@ public class ProtobufValidator implements Validator {
     @Override
     public void validate(RequestData data) {
         Message protoMessage = DbCollectionsUtil.getProtoMessage(data.getEntity())
-                .orElseThrow(() -> {
-                    log.error("Entity: {} is not supported in the current model.", data.getEntity());
-                    return new ModelException("Entity: " + data.getEntity() + "is not supported in the current model.");
-                });
+                .orElseThrow(() ->
+                        new ModelException("Entity: " + data.getEntity() + "is not supported in the current model.")
+                );
 
         InvalidProtobufMsgHandler.handle(() -> {
             parser.merge(data.getData(), protoMessage.toBuilder());
