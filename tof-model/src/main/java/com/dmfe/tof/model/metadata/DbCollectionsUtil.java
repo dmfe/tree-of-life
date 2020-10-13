@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 public final class DbCollectionsUtil {
 
-
     private static class EntityInfo {
 
         private final String entityCollectionName;

@@ -13,7 +13,6 @@ final class InvalidProtobufMsgHandler {
         try {
             return thrower.doWork();
         } catch (InvalidProtocolBufferException ex) {
-            log.error("Error while parsing protobuf message: {}", ex.getLocalizedMessage(), ex);
             throw new ProtobufFormatException("Error while parsing protobuf message: " + ex.getLocalizedMessage(), ex);
         }
     }
